@@ -3,6 +3,7 @@ import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { motion } from "motion/react";
 import axios from 'axios';
+import Navbar from '../components/Navbar'
 import { ServerUrl } from '../App';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
@@ -108,6 +109,8 @@ function Pricing() {
 
 
   return (
+    <>
+    <Navbar /> 
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-emerald-50 py-16 px-6'>
 
       <div className='max-w-6xl mx-auto mb-14 flex items-start gap-4'>
@@ -220,6 +223,7 @@ function Pricing() {
       </div>
 
     </div>
+    </>
   )
 }
 
