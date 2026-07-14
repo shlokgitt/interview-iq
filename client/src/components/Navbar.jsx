@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from "motion/react"
 import { BsRobot, BsCoin } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaUserAstronaut } from "react-icons/fa";
 import { useState } from 'react';
@@ -37,13 +38,13 @@ function Navbar() {
         animate={{opacity:1 , y:0}}
         transition={{duration: 0.3}}
         className='w-full max-w-6xl bg-white rounded-[24px] shadow-sm border border-gray-200 px-8 py-4 flex justify-between items-center relative'>
-            <div className='flex items-center gap-3 cursor-pointer'>
+            <Link to="/" className='flex items-center gap-3 cursor-pointer'>
                 <div className='bg-black text-white p-2 rounded-lg'>
                     <BsRobot size={18}/>
 
                 </div>
                 <h1 className='font-semibold hidden md:block text-lg'>InterviewIQ.AI</h1>
-            </div>
+            </Link>
 
             <div className='flex items-center gap-6  relative'>
                 <div className='relative'>
