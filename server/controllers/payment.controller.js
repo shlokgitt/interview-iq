@@ -2,14 +2,26 @@ import Payment from "../models/payment.model.js";
 import User from "../models/user.model.js";
 import razorpay from "../services/razorpay.service.js";
 import crypto from "crypto"
+// Server-side plan configuration to prevent client tampering
+const PLANS = {
+  basic: { amount: 100, credits: 150 },
+  pro: { amount: 500, credits: 650 },
+};
 
 export const createOrder = async (req,res) => {
     try {
-        const {planId, amount, credits} = req.body;
-          if (!amount || !credits) {
-      return res.status(400).json({ message: "Invalid plan data" });
-    }
+        const {planId} = req.body;
+       if (!planId) {
+  return res.status(400).json({ message: "Plan ID is required" });
+}
 
+// Validate planId and get server-side values
+const planConfig = PLANS[planId];
+if (!planConfig) {
+  return res.status(400).json({ message: "Invalid plan ID" });
+}
+
+const { amount, credits } = planConfig;
      const options = {
       amount: amount * 100, // convert to paise
       currency: "INR",
