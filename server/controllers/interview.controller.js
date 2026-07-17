@@ -94,19 +94,18 @@ export const generateQuestion = async (req, res) => {
       return res.status(400).json({ message: "Role, Experience and Mode are required." })
     }
 
-    const user = await User.findById(req.userId)
+    const user = await User.findOneAndUpdate(
+{ _id: req.userId, credits: { $gte: 50 } },
+  { $inc: { credits: -50 } },
+  { new: true }
+);
+if (!user) {
+  return res.status(400).json({
+    message: "Not enough credits. Minimum 50 required."
+  });
+}
 
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found."
-      });
-    }
 
-    if (user.credits < 50) {
-      return res.status(400).json({
-        message: "Not enough credits. Minimum 50 required."
-      });
-    }
 
     const projectText = Array.isArray(projects) && projects.length
       ? projects.join(", ")
@@ -195,8 +194,6 @@ Make questions based on the candidate’s role, experience,interviewMode, projec
       });
     }
 
-    user.credits -= 50;
-    await user.save();
 
     const interview = await Interview.create({
       userId: user._id,
