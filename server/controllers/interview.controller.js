@@ -227,7 +227,10 @@ export const submitAnswer = async (req, res) => {
   try {
     const { interviewId, questionIndex, answer, timeTaken } = req.body
 
-    const interview = await Interview.findById(interviewId)
+    const interview = await Interview.findOne({ _id: interviewId, userId: req.userId })
+    if (!interview) {
+      return res.status(404).json({ message: "Interview not found or unauthorized" });
+    }
     const question = interview.questions[questionIndex]
 
     // If no answer
@@ -337,9 +340,9 @@ Answer: ${answer}
 export const finishInterview = async (req,res) => {
   try {
     const {interviewId} = req.body
-    const interview = await Interview.findById(interviewId)
+    const interview = await Interview.findOne({ _id: interviewId, userId: req.userId })
     if(!interview){
-      return res.status(400).json({message:"failed to find Interview"})
+      return res.status(404).json({message:"failed to find Interview or unauthorized"})
     }
 
     const totalQuestions = interview.questions.length;
@@ -412,10 +415,10 @@ export const getMyInterviews = async (req,res) => {
 
 export const getInterviewReport = async (req,res) => {
   try {
-    const interview = await Interview.findById(req.params.id)
+    const interview = await Interview.findOne({ _id: req.params.id, userId: req.userId })
 
     if (!interview) {
-      return res.status(404).json({ message: "Interview not found" });
+      return res.status(404).json({ message: "Interview not found or unauthorized" });
     }
 
 
